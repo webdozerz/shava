@@ -1,5 +1,5 @@
 <template>
-    <v-container  class="fill-heigth mt-4 mb-4">
+    <v-container fluid class="fill-heigth mt-4 mb-4">
         <v-row >
             <v-card-title class="font-weight-light">Администрирование</v-card-title>
             <v-container fluid v-if="passwordCheck == passwordTrue">
