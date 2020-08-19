@@ -105,7 +105,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a79261;
 }
-.v-dialog:not(.v-dialog--fullscreen) {
-  max-height: 95%;
-}
 </style>

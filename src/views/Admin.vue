@@ -16,6 +16,7 @@
                                 <th class="text-left">Размер</th>
                                 <th class="text-left">Соус</th>
                                 <th class="text-left">Добавки</th>
+                                <th class="text-left">Овощи</th>
                                 <th class="text-left">Закуски</th>
                                 <th class="text-left">Доп</th>
                                 <th class="text-left"><v-icon>mdi-bottle-tonic</v-icon></th>
@@ -73,6 +74,23 @@
                                         </div>
                                     </div>
                                 </td>
+                              <td>
+                                <div v-for="(vegs, d) in item.order" :key="d">
+                                  <div v-if="vegs.shavaVegs.length > 0">
+                                    <v-chip-group class="mb-2">
+                                      <v-chip v-for="(veg, i) in vegs.shavaVegs" :key="i" :value="veg"
+                                              small text-color="white" dark>
+                                        {{ veg }}
+                                      </v-chip>
+                                    </v-chip-group>
+                                  </div>
+                                  <div v-else>
+                                    <v-chip small text-color="white" dark>
+                                      Без овощей
+                                    </v-chip>
+                                  </div>
+                                </div>
+                              </td>
                                 <td>
                                     <div v-for="(zaks, d) in item.order" :key="d">
                                         <div v-if="zaks.zakuski.length > 0">
@@ -201,7 +219,7 @@
                 }
                 if (value == 'spicy') {
                     return value = 'Острый'
-                } 
+                }
             },
             spicyLevelName: function (value) {
                 // if (!value) return ''

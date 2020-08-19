@@ -1,6 +1,6 @@
 <template>
     <v-col cols="12" xs="12" sm="6" md="6" lg="4" xl="4">
-        <v-card class="mx-auto my-12" max-width="374" min-height="300px"  @click="showContext"
+        <v-card class="mx-auto my-12" max-width="450" min-height="300px"  @click="showContext"
             style="cursor: pointer; background-color: #00000000 !important" :ripple="false">
             <v-img height="180" :src="src" contain class="slideTop"></v-img>
             <p class="text-center subtitle-1 font-weight-medium font-weight-bold font pt-6" style="color: #d7b56d">{{title}} <v-icon color="green" small

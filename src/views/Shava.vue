@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <h2 class="font text-center pt-12" style="color: #d7b56d">Хрустящая шавуха</h2>
     <h4 class=" text-center pb-12 font-weight-light" style="color: grey">Попробуйте нашу шавуху в Томске</h4>
     <v-row>
@@ -156,7 +156,7 @@
   .font{
         font-family: myriad-pro-condensed, sans-serif !important;
         font-weight: 700;
-        font-style: normal; 
+        font-style: normal;
         font-size: 20px;
   }
 </style>
