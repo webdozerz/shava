@@ -85,3 +85,27 @@
     background-size: cover !important;
   }
 </style>
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d7b56d;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a79261;
+}
+.v-dialog:not(.v-dialog--fullscreen) {
+  max-height: 95%;
+}
+</style>

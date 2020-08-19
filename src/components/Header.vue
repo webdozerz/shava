@@ -103,7 +103,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-dialog v-model="dialog" :max-width="returnWidth()" dark>
+        <v-dialog v-model="dialog" :max-width="returnWidth()" dark class="cart">
             <v-card v-if="$store.state.cart.length > 0">
                 <v-card-title class="title ml-6">Предзаказ
                     <v-badge :content="countItems" :value="countItems" color="green" overlap>
@@ -123,6 +123,7 @@
                                     <th class="text-left">Размер</th>
                                     <th class="text-left">Соус</th>
                                     <th class="text-left">Добавки</th>
+                                    <th class="text-left">Овощи</th>
                                     <th class="text-left">Закуски</th>
                                     <th class="text-left">Напитки</th>
                                     <th class="text-left">Цена</th>
@@ -148,6 +149,21 @@
                                                 Без добавок
                                             </v-chip>
                                         </div>
+                                    </td>
+                                    <td>
+                                      <div v-if="item.shavaVegs.length > 0">
+                                        <v-chip-group column>
+                                          <v-chip v-for="(veg, i) in item.shavaVegs" :key="i" :value="add" small
+                                                  text-color="white" dark>
+                                            {{ veg }}
+                                          </v-chip>
+                                        </v-chip-group>
+                                      </div>
+                                      <div v-else>
+                                        <v-chip small text-color="white" dark>
+                                          Без овощей
+                                        </v-chip>
+                                      </div>
                                     </td>
                                     <td>
                                         <div v-if="item.zakuski.length > 0">
@@ -350,7 +366,7 @@
         methods: {
             returnWidth() {
                 if (this.$store.state.cart.length > 0) {
-                    return 1300;
+                    return 1500;
                 } else {
                     return 400;
                 }
@@ -419,7 +435,6 @@
     .headerSmall {
         height: 90px;
     }
-
     .phone {
         color: rgb(255, 255, 255);
         text-decoration: none;

@@ -1,5 +1,5 @@
 <template>
-    <v-col cols="12" xs="12" sm="6" md="6" lg="3" xl="3">
+    <v-col cols="12" xs="12" sm="6" md="6" lg="4" xl="4">
         <v-card class="mx-auto my-12" max-width="374" min-height="300px"  @click="showContext"
             style="cursor: pointer; background-color: #00000000 !important" :ripple="false">
             <v-img height="180" :src="src" contain class="slideTop"></v-img>
@@ -32,9 +32,9 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <v-dialog v-model="showAddes" max-width="1350" overlay-opacity="0.8">
+        <v-dialog v-model="showAddes" max-width="1500" overlay-opacity="0.8">
             <v-card class="flex" justify="center">
-                <v-container class="golden">
+                <v-container fluid class="golden">
                     <v-row justify="center" align="center">
                         <v-col justify="center" align="center" xs="12" sm="12" md="4" lg="4" xl="4">
                             <v-avatar class="" size="300" tile>
@@ -114,6 +114,16 @@
                                     </v-chip>
                                 </v-chip-group>
                             </v-card-text>
+                          <v-card-text>
+                            <span class="subheading">Добавить овощей</span>
+                            <v-chip-group v-model="shavaVegsArray" active-class="orange--text text--accent-1" column
+                                          multiple>
+                              <v-chip v-for="(veg, i) in shavaVegs" :key="i" :value="veg.name" filter
+                                      @click="toggleActive(veg)">
+                                {{ veg.name }} | {{ veg.ves }}г | {{ veg.price }}₽
+                              </v-chip>
+                            </v-chip-group>
+                          </v-card-text>
                             <v-card-text>
                                 <span class="subheading">Дополнительные закуски</span>
                                 <v-chip-group v-model="dopZak" active-class="orange--text text--accent-1" column multiple>
@@ -193,7 +203,7 @@
                             <v-card-text class="subtitle-1" style="display: none;"> <span
                                     class=" font-weight-bold">Итого:
                                 </span>{{ normalizedPrice }}₽ +
-                                соус {{ priciningSouses() }}₽ + добавки {{ priciningAddes() }}₽ + напитки
+                                соус {{ priciningSouses() }}₽ + добавки {{ priciningAddes() }}₽ + овощи {{ priciningVegs() }}₽ + напитки
                                 {{ priciningDrinks() }}₽ + допы {{ priciningDops() }}₽ + соус для картошки
                                 {{ sousForPotatoePricePricining() }}₽ + карамельный соус для 4шт
                                 {{ priciningCaramelSousOne() }}₽ + карамельный соус для 7шт
@@ -220,7 +230,7 @@
         props: ['id', 'title', 'description', 'price1', 'price2', 'ves1', 'ves2', 'src', 'src2', 'size1', 'size2'],
         data: () => ({
             settings: {
-                maxScrollbarLength: 60
+                maxScrollbarLength: 60,
             },
             showAddes: false, // Показатьл модальное окно
             // Массив соусов
@@ -251,6 +261,26 @@
                     name: 'Без соуса',
                 },
             ],
+            shavaVegs: [
+              {
+                name: 'Пекинка',
+                price: 30,
+                ves: 30,
+                active: false,
+              },
+              {
+                name: 'Огурец',
+                price: 30,
+                ves: 30,
+                active: false,
+              },
+              {
+                name: 'Томаты Черри',
+                price: 30,
+                ves: 30,
+                active: false,
+              }
+            ],
             // Массив добавок в шавуху
             addes: [{
                     name: 'Мясо курицы',
@@ -258,12 +288,12 @@
                     ves: 100,
                     active: false,
                 },
-                {
-                    name: 'Овощи на выбор',
-                    price: 30,
-                    ves: 30,
-                    active: false,
-                },
+                // {
+                //     name: 'Овощи на выбор',
+                //     price: 30,
+                //     ves: 30,
+                //     active: false,
+                // },
                 {
                     name: 'Перец чили',
                     price: 20,
@@ -339,54 +369,54 @@
                     action: 'mdi-glass-wine',
                     title: 'Фирменные напитки',
                     items: [
-                        { 
+                        {
                             title: 'Шавуху хочу (лимон, имбирь)',
                             price: 70,
                             ves: 0.5
                         },
-                        { 
+                        {
                             title: 'Компот от бабули',
                             price: 50,
                             ves: 0.5
                         },
-                        { 
+                        {
                             title: 'Морс вишневый',
                             price: 60,
                             ves: 0.5
                         },
-                        { 
+                        {
                             title: 'Морс клюквенный',
                             price: 60,
                             ves: 0.5
                         },
-                        
+
                     ],
                 },
                 {
                     action: 'mdi-bottle-soda-classic-outline',
                     title: 'Прохладительные напитки',
                     items: [
-                        { 
+                        {
                             title: 'Pepsi в жестяной банке',
                             price: 60,
                             ves: 0.33
                         },
-                        { 
+                        {
                             title: 'Pepsi в стеклянной бутылке',
                             price: 130,
                             ves: 0.25
                         },
-                        { 
+                        {
                             title: 'Квас',
                             price: 60,
                             ves: 0.5
                         },
-                        { 
+                        {
                             title: 'Акваминирале в ассортименте',
                             price: 50,
                             ves: 0.5
                         },
-                        { 
+                        {
                             title: 'Энергетический напиток "Драйв"',
                             price: 90,
                             ves: 0.5
@@ -397,27 +427,27 @@
                     action: 'mdi-tea-outline',
                     title: 'Горячие напитки',
                     items: [
-                        { 
+                        {
                             title: 'Чай пакетированный в ассортименте',
                             price:  20,
                             ves: 0.25
                         },
-                        { 
+                        {
                             title: 'Кофе растворимый',
                             price:  30,
                             ves: 0.25
                         },
-                        { 
+                        {
                             title: 'Кофе в турке',
                             price:  50,
                             ves: 0.25
                         },
-                        // { 
+                        // {
                         //     title: 'Глинтвейн безалкогольный',
                         //     price:  40,
                         //     ves: 0.25
                         // },
-                        // { 
+                        // {
                         //     title: 'Чай имбирный',
                         //     price:  40,
                         //     ves: 0.25
@@ -436,6 +466,7 @@
             selected: [], // Выбранные напитки
             shavaSouses: {}, // Выбранный соус
             shavaAddes: [], // Выбранные добавки
+            shavaVegsArray: [], //Выбранные овощи
             dopZak: [], // Выбранные закуски
             shavaSize: 'mini', // Размер шавухи
             sousForPotatoe: 'nsous', // Выбор соуса для картошки фри
@@ -445,6 +476,7 @@
             caramelFour: false, // Карамельный соус для спринг ролла 7 штук
             sousPrice: 0, // Цена соуса
             addesPrice: 0, // Цена добавок
+            vegsPrice: 0,
             dopsPrice: 0, // Цена дополнительных закусок
             drinksPrice: 0, // Цена за напитки
             sousForPotatoePrice: 0, // Цена за соус для картошки фри
@@ -533,6 +565,15 @@
                 });
                 return this.addesPrice = total;
             },
+            priciningVegs: function () {
+              var total = 0;
+              this.shavaVegs.forEach(function (s) {
+                if (s.active) {
+                  total += s.price;
+                }
+              });
+              return this.vegsPrice = total;
+            },
             priciningDops: function () {
                 var total = 0;
                 this.dopsArray.forEach(function (s) {
@@ -561,7 +602,7 @@
                     falafel = 0;
                 }
                 var initialShavaPrice = this.normalizedPrice;
-                total = initialShavaPrice + this.sousPrice + this.addesPrice + this.drinksPrice + this.dopsPrice +
+                total = initialShavaPrice + this.sousPrice + this.addesPrice + this.vegsPrice + this.drinksPrice + this.dopsPrice +
                     this.sousForPotatoePrice + this.caramelPriceOne + this.caramelPriceTwo + falafel;
                 result = total;
 
@@ -581,6 +622,7 @@
                     shavaSize: this.shavaSize, // Выбранный размер
                     shavaSouses: this.shavaSouses, // Выбранный соус
                     shavaAddes: this.shavaAddes, // Выбранные добавки
+                    shavaVegs: this.shavaVegsArray, // Выбранные овощи
                     zakuski: this.dopZak, // Дополнительные закуски
                     sousForPotatoe: this.sousForPotatoe, // Соус для картошки
                     caramelOne: this.caramelOne, // Соус для спринг ролла 4шт
@@ -635,7 +677,7 @@
         -webkit-transition: all 0.5s ease-in-out;
         transition: all 0.5s ease-in-out;
     }
-    
+
     .slideTop:hover {
         -o-transform: translateY(-20px);
         -ms-transform: translateY(-20px);
@@ -653,7 +695,7 @@
     .font{
         font-family: myriad-pro-condensed, sans-serif !important;
         font-weight: 700;
-        font-style: normal; 
+        font-style: normal;
         font-size: 20px;
     }
 </style>
