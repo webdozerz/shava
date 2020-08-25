@@ -25,15 +25,15 @@
                                         </span>
                                     </v-tooltip>
                                     <span class="text-center hidden-sm-and-down phone"
-                                        style="margin: 0px 0px 0px 30px; cursor: pointer">
+                                        style="margin: 0px 0px 0px 30px; cursor: pointer" @click="goTo2gis()">
                                         <v-tooltip bottom>
                                             <template v-slot:activator="{ on }">
-                                                <span v-on="on">4.7<v-icon dense color="yellow">mdi-star</v-icon></span>
+                                                <span v-on="on">{{ rating }}<v-icon dense color="yellow">mdi-star</v-icon></span>
                                             </template>
                                             <span>
-                                                Средний рейтинг пользователей (2GIS): 4.7
+                                                Рейтинг пользователей (2GIS): {{ rating }}
                                                 <br>
-                                                Отзывов: 16
+                                                Отзывов: {{ ratingCount }}
                                             </span>
                                         </v-tooltip>
                                     </span>
@@ -75,12 +75,12 @@
                     <v-list-item-title>
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
-                                <span v-on="on">4.7</span>
+                                <span v-on="on" @click="goTo2gis()">4.4</span>
                             </template>
                             <span>
-                                Средний рейтинг пользователей (2GIS): 4.7
+                                Рейтинг пользователей (2GIS): {{ rating }}
                                 <br>
-                                Отзывов: 16
+                                Отзывов: {{ ratingCount }}
                             </span>
                         </v-tooltip>
                     </v-list-item-title>
@@ -319,6 +319,8 @@
             },
             dialog: false,
             orders: [],
+            rating: '4.4',
+            ratingCount: '90',
         }),
         firestore: {
             orders: db.collection('orders')
@@ -400,6 +402,9 @@
             },
             removeFromCart(item) {
                 this.$store.commit('removeFromCart', item);
+            },
+            goTo2gis(){
+              window.open("https://2gis.ru/tomsk/firm/70000001038152192/tab/reviews?m=84.950246%2C56.460803%2F16s", "_blank")
             }
         }
     }

@@ -275,7 +275,7 @@
                 active: false,
               },
               {
-                name: 'Томаты Черри',
+                name: 'Томат Черри',
                 price: 30,
                 ves: 30,
                 active: false,
