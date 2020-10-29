@@ -1,22 +1,20 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 import vuetify from './plugins/vuetify';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 // import * as firebase from "firebase/app";
 import { firestorePlugin } from 'vuefire'
-
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
+Vue.use(firestorePlugin);
+Vue.use(VueAxios, axios);
 
-
-
-
-Vue.use(firestorePlugin)
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // var firebaseConfig = {
 //     apiKey: "AIzaSyBCkPRLi9plk69dDNxgIIzA0q4QK9HNUO0",

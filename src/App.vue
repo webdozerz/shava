@@ -41,7 +41,6 @@
     components: {
       Header
     },
-
     data: () => ({
       items: [{
           src: require('./assets/pizza1.jpg')
@@ -69,7 +68,7 @@
     },
     created: function () {
       this.$vuetify.theme.dark = true
-    }
+    },
   };
 </script>
 

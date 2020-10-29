@@ -153,7 +153,7 @@
                                     <td>
                                       <div v-if="item.shavaVegs.length > 0">
                                         <v-chip-group column>
-                                          <v-chip v-for="(veg, i) in item.shavaVegs" :key="i" :value="add" small
+                                          <v-chip v-for="(veg, i) in item.shavaVegs" :key="i" :value="veg" small
                                                   text-color="white" dark>
                                             {{ veg }}
                                           </v-chip>
@@ -250,7 +250,7 @@
                 </v-card-text>
                 <v-card-actions class="mr-10 pb-4">
                     <v-spacer></v-spacer>
-                    <v-btn color="white" outlined @click="addOrder(name, phone)" :disabled="!valid">
+                    <v-btn color="white" outlined @click.stop="addOrder(name, phone)" :disabled="!valid">
                         Оформить за {{ totalPrice }}₽
                     </v-btn>
                 </v-card-actions>
@@ -284,15 +284,12 @@
 </template>
 
 <script>
-    import {
-        db
-    } from '../db'
+import { db } from '../db';
+import Vue from 'vue';
+Vue.prototype.$eventBus = new Vue();
 
-    import Vue from 'vue'
-    Vue.prototype.$eventBus = new Vue();
-
-    export default {
-        data: () => ({
+export default {
+  data: () => ({
             drawer: null,
             items: [
                 // {
@@ -321,11 +318,14 @@
             orders: [],
             rating: '4.4',
             ratingCount: '90',
+            localCart: [],
+            formatterCart: [],
+            formattedTotal: [],
         }),
-        firestore: {
+  firestore: {
             orders: db.collection('orders')
         },
-        filters: {
+  filters: {
             sizeName: function (value) {
                 if (!value) return ''
                 if (value == 'mini') {
@@ -335,7 +335,7 @@
                 }
             }
         },
-        computed: {
+  computed: {
             totalPrice() {
                 let total = 0;
                 for (let item of this.$store.state.cart) {
@@ -347,6 +347,9 @@
                 get: function () {
                     return this.$store.state.cartCount
                 },
+            },
+            cartItems() {
+              return this.$store.state.cart;
             },
             btnList() {
                 return [
@@ -365,7 +368,7 @@
                 ]
             },
         },
-        methods: {
+  methods: {
             returnWidth() {
                 if (this.$store.state.cart.length > 0) {
                     return 1500;
@@ -378,16 +381,21 @@
                 this.$refs.form.validate()
                 this.$refs.dialog.validate()
             },
-            addOrder(name, phone) {
-                this.validate
-                const createdAt = new Date()
-                db.collection('orders').add({
-                    date: createdAt,
-                    time: this.time,
-                    name: name,
-                    phone: phone,
-                    order: this.$store.state.cart
-                })
+            async addOrder(name, phone) {
+                this.validate;
+                const createdAt = new Date();
+                await db.collection('orders').add({
+                  date: createdAt,
+                  time: this.time,
+                  name: name,
+                  phone: phone,
+                  order: this.$store.state.cart
+                });
+                const orderJSON = JSON.stringify(this.formatterCart);
+                const payload = `*Создан*: ${createdAt}, *Время* : ${this.time}, *Имя*: ${name}, *Телефон*: ${phone}, *Заказ*: ${orderJSON}, *Итоговая сумма*: ${this.totalPrice}`;
+                const message = encodeURI(payload);
+                console.log(message);
+                await this.axios.post(`https://api.telegram.org/bot1393486428:AAGbiUDCt8K6ifeRdtUZByAr8M6pk3tEfqY/sendMessage?chat_id=-488001223&text=${message}&parse_mode=Markdown`).then(response => (console.log(response))).catch(error => console.log(error));
                 this.name = '';
                 this.phone = '';
                 this.time = null;
@@ -406,10 +414,56 @@
             goTo2gis(){
               window.open("https://2gis.ru/tomsk/firm/70000001038152192/tab/reviews?m=84.950246%2C56.460803%2F16s", "_blank")
             }
+        },
+  watch: {
+          cartItems: {
+            immediate: true,
+            handler(value) {
+              if (value.length) {
+                this.localCart = value.map((item) => ({ ...item }));
+              }
+            }
+          },
+          localCart: {
+            immediate: true,
+            handler(value) {
+              let newCart = [];
+              value.forEach((item)=>{
+                const cartItem = {
+                  id: item.id,
+                  название: item.title,
+                  размер: item.shavaSize,
+                };
+                if (item.shavaAddes.length) {
+                  cartItem.добавки = item.shavaAddes;
+                }
+                if (item.drinks.length) {
+                  const drinkItem = {};
+                  item.drinks.forEach((item)=>{
+                    drinkItem.название = item.title;
+                  });
+                  cartItem.напитки = drinkItem;
+                }
+                if (item.change === true) {
+                  cartItem.заменитьНаФалафель = 'да';
+                }
+                if (item.change === false) {
+                  cartItem.заменитьНаФалафель = 'нет';
+                }
+                if (item.shavaVegs.length) {
+                  cartItem.овощи = item.shavaVegs;
+                }
+                if(item.title === 'Острая') {
+                  cartItem.острота = item.spicyLevel;
+                }
+                newCart.push(cartItem);
+              });
+              this.formatterCart = newCart;
+            }
+          },
         }
-    }
+}
 </script>
-
 <style scoped>
     .bg {
         background-color: #121618 !important;
